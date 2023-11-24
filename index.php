@@ -28,18 +28,15 @@
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $UserLogin = $_POST['login'];
-        $UserPassword = $_POST['haslo'];
-
         $stmt = $conn->prepare("SELECT * FROM users WHERE logins = ?");
-        $stmt->bind_param("s", $UserLogin);
+        $stmt->bind_param("s", $_POST['login']);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
-            if ($UserPassword == $row['pass']) {
+            if ($_POST['haslo'] == $row['pass']) {
                 echo "Zalogowano pomyślnie";
             } else {
                 echo "Błędne hasło";
